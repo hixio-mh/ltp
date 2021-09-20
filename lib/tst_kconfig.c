@@ -392,6 +392,7 @@ static inline unsigned int populate_vars(struct tst_expr *exprs[],
 			strncpy(vars[cnt].id, j->tok, vars[cnt].id_len);
 			vars[cnt].id[vars[cnt].id_len] = 0;
 			vars[cnt].choice = 0;
+			vars[cnt].val = NULL;
 
 			var = find_var(vars, cnt, vars[cnt].id);
 
@@ -434,6 +435,9 @@ static int map(struct tst_expr_tok *expr)
 
 	if (choice != 'v')
 		return var->choice == choice;
+
+	if (var->choice != 'v')
+		return 0;
 
 	if (strlen(var->val) != len)
 		return 0;
@@ -497,7 +501,7 @@ void tst_kconfig_check(const char *const kconfigs[])
 
 		if (val != 1) {
 			abort_test = 1;
-			tst_res(TINFO, "Constrain '%s' not satisfied!", kconfigs[i]);
+			tst_res(TINFO, "Constraint '%s' not satisfied!", kconfigs[i]);
 			dump_vars(exprs[i]);
 		}
 

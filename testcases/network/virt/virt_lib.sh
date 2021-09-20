@@ -231,7 +231,7 @@ virt_setup()
 	virt_add_rhost "$opt_r"
 
 	ROD_SILENT "ip addr add ${ip6_virt_local}/64 dev ltp_v0 nodad"
-	tst_rhost_run -s -c "ip ad add ${ip6_virt_remote}/64 dev ltp_v0 nodad"
+	tst_rhost_run -s -c "ip addr add ${ip6_virt_remote}/64 dev ltp_v0 nodad"
 
 	ROD_SILENT "ip addr add ${ip_virt_local}/24 dev ltp_v0"
 	tst_rhost_run -s -c "ip addr add ${ip_virt_remote}/24 dev ltp_v0"
@@ -250,9 +250,9 @@ virt_minimize_timeout()
 	local mac_rmt="$(tst_rhost_run -c 'cat /sys/class/net/ltp_v0/address')"
 
 	if [ "$mac_loc" ]; then
-		ROD_SILENT "ip ne replace $ip_virt_remote lladdr \
+		ROD_SILENT "ip neigh replace $ip_virt_remote lladdr \
 			    $mac_rmt nud permanent dev ltp_v0"
-		tst_rhost_run -s -c "ip ne replace $ip_virt_local lladdr \
+		tst_rhost_run -s -c "ip neigh replace $ip_virt_local lladdr \
 				     $mac_loc nud permanent dev ltp_v0"
 	fi
 
